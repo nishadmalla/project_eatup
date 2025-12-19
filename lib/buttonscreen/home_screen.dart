@@ -76,7 +76,7 @@ class HomeScreen extends StatelessWidget {
                 ),
                 SizedBox(height: 4),
                 Text(
-                  "American, Fast Food",
+                  "Americannn, Fast Food",
                   style: TextStyle(
                     color: Colors.grey,
                     fontSize: 12,

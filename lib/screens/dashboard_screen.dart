@@ -37,7 +37,7 @@ class _DashboardScreenState extends State<DashboardScreen> {
     return Scaffold(
       
       appBar: AppBar(
-        title: const Text('Dashboard Screen'),
+        title: const Text('eate up'),
         elevation: 0,
         centerTitle: true,
         backgroundColor: Colors.white,
