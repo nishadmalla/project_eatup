@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:project_eatup/screens/splash_screen.dart';
+import 'package:project_eatup/theme/button_theme.dart';
 
 
 void main() {
@@ -13,12 +14,17 @@ class MyApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return MaterialApp(
       title: 'Food Delivery App',
+      debugShowCheckedModeBanner: false,
       theme: ThemeData(
         primarySwatch: Colors.orange,
         scaffoldBackgroundColor: Colors.white,
         fontFamily: 'Poppins',
+
+        // 🔹 GLOBAL BUTTON THEME
+        elevatedButtonTheme: ElevatedButtonThemeData(
+          style: AppButtonTheme.primaryButton,
+        ),
       ),
-      debugShowCheckedModeBanner: false,
       home: const SplashScreen(),
     );
   }
