@@ -1,10 +1,21 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:project_eatup/core/services/hive/hive_service.dart';
 import 'package:project_eatup/screens/splash_screen.dart';
 import 'package:project_eatup/theme/button_theme.dart';
 
 
-void main() {
-  runApp(const MyApp());
+void main() async{
+  WidgetsFlutterBinding.ensureInitialized();
+
+  final hiveService = HiveService();
+  await hiveService.init();
+
+  runApp(ProviderScope(
+    overrides: [
+      hiveServiceProvider.overrideWithValue(hiveService),
+    ],
+    child: const MyApp()));
 }
 
 class MyApp extends StatelessWidget {
