@@ -1,94 +1,88 @@
-import 'package:flutter/material.dart';
-import 'package:project_eatup/screens/onbording_screen.dart';
 import 'dart:async';
+import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:project_eatup/core/services/storage/token_service.dart';
 
+// ⚠️ Double-check these import paths match your actual folders!
+import 'package:project_eatup/screens/onbording_screen.dart'; 
+import 'package:project_eatup/screens/dashboard_screen.dart'; // 👈 Your new Dashboard with the buttons
 
-class SplashScreen extends StatefulWidget {
-  const SplashScreen({Key? key}) : super(key: key);
+class SplashScreen extends ConsumerStatefulWidget {
+  const SplashScreen({super.key});
 
   @override
-  State<SplashScreen> createState() => _SplashScreenState();
+  ConsumerState<SplashScreen> createState() => _SplashScreenState();
 }
 
-class _SplashScreenState extends State<SplashScreen> with SingleTickerProviderStateMixin {
+class _SplashScreenState extends ConsumerState<SplashScreen>
+    with SingleTickerProviderStateMixin {
   late AnimationController _controller;
   late Animation<double> _fadeAnimation;
 
   @override
   void initState() {
     super.initState();
-    
+
     _controller = AnimationController(
-      duration: const Duration(milliseconds: 1500),
+      duration: const Duration(milliseconds: 800),
       vsync: this,
     );
-    
+
     _fadeAnimation = Tween<double>(begin: 0.0, end: 1.0).animate(_controller);
     _controller.forward();
 
-    Timer(const Duration(seconds: 2), () {
-      Navigator.of(context).pushReplacement(
-        MaterialPageRoute(builder: (_) => const OnboardingScreen()),
+    // Start the timer to navigate
+    _navigate();
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      backgroundColor: Colors.orange, 
+      body: FadeTransition(
+        opacity: _fadeAnimation,
+        child: const Center(
+          child: CircularProgressIndicator(
+            color: Colors.white,
+            strokeWidth: 3,
+          ),
+        ),
+      ),
+    );
+  }
+
+  Future<void> _navigate() async {
+    // Wait for the splash animation to finish (2 seconds)
+    await Future.delayed(const Duration(seconds: 2));
+
+    if (!mounted) return;
+
+    // Instantly grab the token since SharedPreferences is already loaded
+    final tokenService = ref.read(tokenServiceProvider);
+    final token = tokenService.getToken();
+
+    if (token != null && token.isNotEmpty) {
+      // ✅ USER LOGGED IN -> Send to Dashboard (the screen with buttons!)
+      Navigator.pushReplacement(
+        context,
+        MaterialPageRoute(
+          builder: (_) => const DashboardScreen(), 
+        ),
       );
-    });
+    } else {
+      // ❌ NOT LOGGED IN -> Send to Onboarding
+      Navigator.pushReplacement(
+        context,
+        MaterialPageRoute(
+          builder: (_) => const OnboardingScreen(),
+        ),
+      );
+    }
   }
 
   @override
   void dispose() {
     _controller.dispose();
     super.dispose();
-  }
-
-  @override
-  Widget build(BuildContext context) {
-    return Scaffold(
-      backgroundColor: Colors.red,
-      body: Center(
-        child: FadeTransition(
-          opacity: _fadeAnimation,
-          child: Column(
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: [
-              // PNG Logo
-              Container(
-                width: 150,
-                height: 150,
-                decoration: BoxDecoration(
-                  color: Colors.white,
-                  borderRadius: BorderRadius.circular(30),
-                  boxShadow: [
-                    BoxShadow(
-                      color: Colors.black.withOpacity(0.2),
-                      blurRadius: 20,
-                      offset: const Offset(0, 10),
-                    ),
-                  ],
-                ),
-                child: ClipRRect(
-                  borderRadius: BorderRadius.circular(30),
-                  child: Padding(
-                    padding: const EdgeInsets.all(20.0),
-                    child: Image.asset(
-                      'C:\Users\LEGION\Documents\devloper\flutter\project_eatup\assets\logo.png',
-                      fit: BoxFit.contain,
-                    ),
-                  ),
-                ),
-              ),
-              const SizedBox(height: 30),
-              const Text(
-                'eate up',
-                style: TextStyle(
-                  color: Colors.white,
-                  fontSize: 32,
-                  fontWeight: FontWeight.bold,
-                  letterSpacing: 2,
-                ),
-              ),
-            ],
-          ),
-        ),
-      ),
-    );
   }
 }
