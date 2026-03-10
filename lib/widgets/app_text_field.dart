@@ -12,7 +12,7 @@ class AppTextField extends StatelessWidget {
   final int maxLines;
 
   const AppTextField({
-    Key? key,
+    super.key,
     required this.label,
     required this.hintText,
     required this.controller,
@@ -22,7 +22,7 @@ class AppTextField extends StatelessWidget {
     this.suffixIcon,
     this.validator,
     this.maxLines = 1,
-  }) : super(key: key);
+  });
 
   @override
   Widget build(BuildContext context) {
