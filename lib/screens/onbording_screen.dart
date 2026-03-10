@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'signup_screen.dart';
+import '../features/auth/presentation/pages/signup_screen.dart';
 import '../widgets/app_button.dart';
 
 class OnboardingScreen extends StatefulWidget {
