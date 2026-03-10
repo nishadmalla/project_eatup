@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
-import 'signup_screen.dart';
+import '../features/auth/presentation/pages/signup_screen.dart';
 import '../widgets/app_button.dart';
 
 class OnboardingScreen extends StatefulWidget {
-  const OnboardingScreen({Key? key}) : super(key: key);
+  const OnboardingScreen({super.key});
 
   @override
   State<OnboardingScreen> createState() => _OnboardingScreenState();
@@ -144,7 +144,7 @@ class OnboardingData {
 class OnboardingPage extends StatelessWidget {
   final OnboardingData data;
 
-  const OnboardingPage({Key? key, required this.data}) : super(key: key);
+  const OnboardingPage({super.key, required this.data});
 
   @override
   Widget build(BuildContext context) {
